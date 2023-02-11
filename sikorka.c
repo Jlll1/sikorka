@@ -6,7 +6,6 @@
 int
 main(int argc, char *argv[])
 {
-  printf("aa\n");
   Display *dpy = XOpenDisplay(NULL);
   int screen = DefaultScreen(dpy);
   int root = RootWindow(dpy, screen);
@@ -33,8 +32,8 @@ main(int argc, char *argv[])
 
   swa.background_pixel = bg.pixel;
   swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask;
-  int x = 100;
-  int y = 100;
+  int x = 50;
+  int y = 50;
   int win_w = 200;
   int win_h = 200;
   XClassHint ch = {"sikorka", "sikorka"};
@@ -46,8 +45,12 @@ main(int argc, char *argv[])
 
   XSetForeground(dpy, gc, fg.pixel);
   XFillRectangle(dpy, drawable, gc, 150, 150, 150, 150);
-  XCopyArea(dpy, drawable, root, gc, 100, 100, 200, 200, 100, 100);
   XSync(dpy, False);
+
+  XftDraw *xftdraw = XftDrawCreate(dpy, drawable, DefaultVisual(dpy, screen), DefaultColormap(dpy, screen));
+  XftFont *font = XftFontOpen(dpy, screen, XFT_FAMILY, XftTypeString, "monospace", XFT_SIZE, XftTypeDouble, 10.0, NULL);
+
+  XftDrawString8(xftdraw, &bg, font, 80, 80, "test test", 9);
   while (True)
   {
   }
